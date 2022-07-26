@@ -3,9 +3,7 @@ generated_warning = "\n// This is a generated file. Do not edit.\n\n"
 
 lines = []
 with open(filename) as f:
-	for line in f:
-		lines.append(line)
-
+	lines.extend(iter(f))
 var_name = filename[:filename.find('.')] + "_code"
 var_type = "const char *";
 var_prefix = "s_"
@@ -22,4 +20,4 @@ with open("resources.gen.cpp", 'w') as f:
 
 with open("resources.gen.h", 'w') as f:
 	f.write(generated_warning)
-	f.write("extern " + var_type + var_prefix + var_name + ";")
+	f.write(f"extern {var_type}{var_prefix}{var_name};")

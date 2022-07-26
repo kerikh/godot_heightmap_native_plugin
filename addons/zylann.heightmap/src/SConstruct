@@ -38,13 +38,11 @@ if platform == "osx":
     env.Append(CCFLAGS = ['-g','-O3', '-arch', 'x86_64'])
     env.Append(LINKFLAGS = ['-arch', 'x86_64'])
 
-if platform == 'windows':
-	# TODO Non-tool build!
-	if target == 'debug':
-		env.Append(CPPDEFINES = ['DEBUG', '_DEBUG'])
-		env.Append(CCFLAGS='/MDd')
-		env.Append(CCFLAGS=Split('/Zi /Fd${TARGET}.pdb'))
-		env.Append(LINKFLAGS = ['/DEBUG'])
+if platform == 'windows' and target == 'debug':
+	env.Append(CPPDEFINES = ['DEBUG', '_DEBUG'])
+	env.Append(CCFLAGS='/MDd')
+	env.Append(CCFLAGS=Split('/Zi /Fd${TARGET}.pdb'))
+	env.Append(LINKFLAGS = ['/DEBUG'])
 
 env.Append(CPPPATH=[
     godot_headers_path,
@@ -65,7 +63,7 @@ sources = []
 def add_sources(sources, dir):
 	for f in os.listdir(dir):
 		if f.endswith('.cpp') or f.endswith('.c'):
-			sources.append(dir + '/' + f)
+			sources.append(f'{dir}/{f}')
 
 add_sources(sources, '.')
 add_sources(sources, 'util')
